@@ -3,11 +3,9 @@ import { route } from 'preact-router';
 import { useEffect, useState } from 'preact/hooks';
 import { useFile } from '../contexts/FileProvider';
 import { useDpad } from '../hooks/useDpad';
-import { OpmlFile, StorageFile } from '../models';
-import { listOPMLFiles, readFileAsText } from '../services/files';
-import { ListItem, MenuOption, View } from '../ui-components';
-import { setSelected } from '../utils/navigation';
-import { convertFileToXMLString } from '../utils/xml';
+import { StorageFile } from '../models';
+import { listOPMLFiles } from '../services/files';
+import { ListItem, View } from '../ui-components';
 import styles from './FileBrowser.module.css';
 
 interface Props {
@@ -26,16 +24,16 @@ export default function FileBrowser({ selectedItemId }: Props): VNode {
 
   const fileService = useFile();
 
+  useEffect(() => {
+    listOPMLFiles().then(setFiles);
+  }, []);
+
   async function openFile(fileId: string) {
     const file = files?.find((a) => a.id === fileId);
     if (!file) return;
     await fileService.open(file.path);
     route('/edit');
   }
-
-  useEffect(() => {
-    listOPMLFiles().then(setFiles);
-  }, []);
 
   useDpad({
     onEnter: openFile,

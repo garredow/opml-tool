@@ -46,6 +46,15 @@ import { OpmlFile } from '../models';
 //   return doc;
 // }
 
+function encodeString(str: string) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 export function convertFileToXMLString(file: OpmlFile): string {
   const xmlString = `
     <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -67,27 +76,19 @@ export function convertFileToXMLString(file: OpmlFile): string {
       </head>
       <body>
         ${file.feeds.reduce((acc, feed) => {
-          const element = document.createElement('outline');
           let outline = '<outline ';
-          if (feed.text)
-            outline += `text="${feed.text.replace(/"/gi, '&quot;')}" `;
-          if (feed.xmlUrl)
-            outline += `xmlUrl="${feed.xmlUrl.replace(/"/gi, '&quot;')}" `;
-          if (feed.type)
-            outline += `type="${feed.type.replace(/"/gi, '&quot;')}" `;
+          if (feed.text) outline += `text="${encodeString(feed.text)}" `;
+          if (feed.xmlUrl) outline += `xmlUrl="${encodeString(feed.xmlUrl)}" `;
+          if (feed.type) outline += `type="${encodeString(feed.type)}" `;
           if (feed.description)
-            outline += `description="${feed.description.replace(
-              /"/gi,
-              '&quot;'
-            )}" `;
+            outline += `description="${encodeString(feed.description)}" `;
           if (feed.htmlUrl)
-            outline += `htmlUrl="${feed.htmlUrl.replace(/"/gi, '&quot;')}" `;
+            outline += `htmlUrl="${encodeString(feed.htmlUrl)}" `;
           if (feed.language)
-            outline += `language="${feed.language.replace(/"/gi, '&quot;')}" `;
-          if (feed.title)
-            outline += `title="${feed.title.replace(/"/gi, '&quot;')}" `;
+            outline += `language="${encodeString(feed.language)}" `;
+          if (feed.title) outline += `title="${encodeString(feed.title)}" `;
           if (feed.version)
-            outline += `version="${feed.version.replace(/"/gi, '&quot;')}" `;
+            outline += `version="${encodeString(feed.version)}" `;
 
           acc += `${outline}/>\n`;
           return acc;

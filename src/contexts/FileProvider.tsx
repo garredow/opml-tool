@@ -1,13 +1,8 @@
 import { h, createContext, VNode } from 'preact';
 import { route } from 'preact-router';
 import { useContext, useState } from 'preact/hooks';
-import { ComponentBaseProps, OpmlFeed, OpmlFile } from '../models';
-import {
-  deleteFile,
-  openAndParseFile,
-  readFileAsText,
-  saveFile,
-} from '../services/files';
+import { ComponentBaseProps, OpmlFile } from '../models';
+import { deleteFile, openAndParseFile, saveFile } from '../services/files';
 import { convertFileToXMLString } from '../utils/xml';
 
 type FileContextValue = {
@@ -22,8 +17,8 @@ type FileContextValue = {
 
 const defaultValue: FileContextValue = {
   data: null,
-  open: (filePath) => Promise.resolve(),
-  update: (file) => Promise.resolve(),
+  open: () => Promise.resolve(),
+  update: () => Promise.resolve(),
   revertChanges: () => Promise.resolve(),
   save: () => Promise.resolve(),
   close: () => Promise.resolve(),
