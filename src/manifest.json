@@ -1,0 +1,21 @@
+{
+  "name": "opml-tool",
+  "short_name": "opml-tool",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fff",
+  "theme_color": "#673ab8",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/assets/icons/icon-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    }
+  ]
+}

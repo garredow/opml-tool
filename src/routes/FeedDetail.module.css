@@ -1,0 +1,18 @@
+.title {
+  padding: 5px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.description {
+  padding: 5px;
+}
+
+.episodes {
+  padding: 5px 5px 0 5px;
+  color: var(--accent-text-color);
+  font-size: 12px;
+}
+.message {
+  text-align: center;
+}

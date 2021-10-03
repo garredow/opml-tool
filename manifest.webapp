@@ -1,0 +1,31 @@
+{
+  "id": "com.garredow.opml-tool",
+  "name": "OPML Tool",
+  "description": "A simple tool for managing feeds in an OPML file.",
+  "version": "0.1.0",
+  "launch_path": "/index.html",
+  "icons": {
+    "256": "/assets/icons/icon-256.png",
+    "128": "/assets/icons/icon-128.png",
+    "64": "/assets/icons/icon-64.png",
+    "48": "/assets/icons/icon-48.png",
+    "32": "/assets/icons/icon-32.png"
+  },
+  "theme_color": "#40798C",
+  "developer": {
+    "name": "Garrett Downs",
+    "url": "https://garrettdowns.com"
+  },
+  "type": "privileged",
+  "permissions": {
+    "systemXHR": {
+      "description": "Required to search podcasts."
+    },
+    "device-storage:sdcard": {
+      "access": "readwrite",
+      "description": "Required to read and write OPML files to external storage."
+    }
+  },
+  "default_locale": "en",
+  "cursor": false
+}

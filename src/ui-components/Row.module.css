@@ -1,0 +1,11 @@
+.root {
+  padding: 6px 5px;
+}
+body[data-compact-layout] .root {
+  padding: 3px 5px;
+}
+
+.label {
+  color: var(--accent-text-color);
+  font-size: 12px;
+}
