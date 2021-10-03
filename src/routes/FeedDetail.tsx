@@ -92,7 +92,7 @@ export default function FeedDetail({ feedId, feedUrl }: Props): VNode {
 
   return (
     <View
-      headerText="Feed Preview"
+      headerText="Review Feed"
       centerMenuText={feedExists ? 'Delete' : 'Add'}
     >
       <div className={styles.title}>{podcast?.title}</div>

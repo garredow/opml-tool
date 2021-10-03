@@ -22,7 +22,6 @@ export default function Search({
   const searchbox = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // searchbox.current?.focus();
     setResults([]);
     if (!queryParam) return;
 
@@ -52,7 +51,6 @@ export default function Search({
   useDpad({
     onEnter: (itemId) => {
       if (itemId === 'search') {
-        // searchbox.current?.blur();
         setQueryParam();
         return;
       }
@@ -97,7 +95,7 @@ export default function Search({
 
   return (
     <View
-      headerText="Search"
+      headerText="Add Feed"
       centerMenuText={getCenterText()}
       rightMenuText="Search"
     >
