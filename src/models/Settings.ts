@@ -1,8 +1,7 @@
 export enum Theme {
   Light = 'light',
   Dark = 'dark',
-  Cobalt = 'cobalt',
-  Simple = 'simple',
+  Plain = 'plain',
 }
 
 export enum DisplayDensity {
