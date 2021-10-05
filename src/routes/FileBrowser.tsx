@@ -6,6 +6,8 @@ import { useDpad } from '../hooks/useDpad';
 import { StorageFile } from '../models';
 import { listOPMLFiles } from '../services/files';
 import { ListItem, View } from '../ui-components';
+import { Container } from '../ui-components/Container';
+import { Typography } from '../ui-components/Typography';
 import styles from './FileBrowser.module.css';
 
 interface Props {
@@ -13,11 +15,24 @@ interface Props {
 }
 
 export default function FileBrowser({ selectedItemId }: Props): VNode {
+  // const [files, setFiles] = useState<StorageFile[] | null>([]);
   const [files, setFiles] = useState<StorageFile[] | null>([
     {
       id: 'file_1',
       name: 'example1.opml',
-      path: '/local/example.opml',
+      path: '/sdcard1/example1.opml',
+      lastModified: '',
+    },
+    {
+      id: 'file_2',
+      name: 'example2.opml',
+      path: '/sdcard1/example2.opml',
+      lastModified: '',
+    },
+    {
+      id: 'file_3',
+      name: 'example3.opml',
+      path: '/sdcard1/example3.opml',
       lastModified: '',
     },
   ]);
@@ -46,6 +61,9 @@ export default function FileBrowser({ selectedItemId }: Props): VNode {
       case 'refresh':
         listOPMLFiles().then(setFiles);
         break;
+      case 'create':
+        fileService.create().then(() => route('/edit'));
+        break;
     }
   }
 
@@ -54,9 +72,24 @@ export default function FileBrowser({ selectedItemId }: Props): VNode {
       headerText="File Browser"
       centerMenuText={selectedItemId ? 'Open' : ''}
       enableAppMenu={true}
-      actions={[{ id: 'refresh', label: 'Refresh List' }]}
+      actions={[
+        { id: 'refresh', label: 'Refresh List' },
+        { id: 'create', label: 'Create File' },
+      ]}
       onAction={handleAction}
     >
+      {files?.length === 0 && (
+        <Container>
+          <Typography align="center">
+            No OPML files found on the SD card. If you'd like, you can create
+            one from the{' '}
+            <Typography display="inline" color="accent">
+              Actions
+            </Typography>{' '}
+            menu.
+          </Typography>
+        </Container>
+      )}
       {files?.map((file, i) => (
         <ListItem
           key={file.id}

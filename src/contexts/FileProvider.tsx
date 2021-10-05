@@ -13,6 +13,7 @@ type FileContextValue = {
   save: () => Promise<void>;
   close: () => void;
   delete: () => Promise<void>;
+  create: (fileName?: string, file?: OpmlFile) => Promise<void>;
 };
 
 const defaultValue: FileContextValue = {
@@ -23,6 +24,7 @@ const defaultValue: FileContextValue = {
   save: () => Promise.resolve(),
   close: () => Promise.resolve(),
   delete: () => Promise.resolve(),
+  create: () => Promise.resolve(),
 };
 
 const FileContext = createContext<FileContextValue>(defaultValue);
@@ -32,6 +34,27 @@ type FileProviderProps = ComponentBaseProps;
 export function FileProvider(props: FileProviderProps): VNode {
   const [originalData, setOriginalData] = useState<OpmlFile | null>(null);
   const [data, setData] = useState<OpmlFile | null>(null);
+
+  async function create() {
+    const { storageName } = (navigator as any).getDeviceStorage('sdcard');
+    const filePath = `/${storageName}/feeds_${new Date().valueOf()}.opml`;
+    const file = {
+      filePath: filePath,
+      title: 'My Feeds',
+      dateCreated: new Date().toISOString(),
+      dateModified: new Date().toISOString(),
+      ownerName: null,
+      ownerEmail: null,
+      feeds: [],
+    };
+    await saveFile(
+      filePath,
+      new Blob([convertFileToXMLString(file)], { type: 'text/xml' })
+    );
+
+    setOriginalData(file);
+    setData(file);
+  }
 
   async function open(filePath: string) {
     const file = await openAndParseFile(filePath);
@@ -81,6 +104,7 @@ export function FileProvider(props: FileProviderProps): VNode {
     <FileContext.Provider
       value={{
         data,
+        create: create,
         open: open,
         update: update,
         revertChanges,
