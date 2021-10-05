@@ -15,32 +15,40 @@ interface Props {
 }
 
 export default function FileBrowser({ selectedItemId }: Props): VNode {
-  // const [files, setFiles] = useState<StorageFile[] | null>([]);
-  const [files, setFiles] = useState<StorageFile[] | null>([
-    {
-      id: 'file_1',
-      name: 'example1.opml',
-      path: '/sdcard1/example1.opml',
-      lastModified: '',
-    },
-    {
-      id: 'file_2',
-      name: 'example2.opml',
-      path: '/sdcard1/example2.opml',
-      lastModified: '',
-    },
-    {
-      id: 'file_3',
-      name: 'example3.opml',
-      path: '/sdcard1/example3.opml',
-      lastModified: '',
-    },
-  ]);
+  const [files, setFiles] = useState<StorageFile[] | null>(null);
 
   const fileService = useFile();
 
-  useEffect(() => {
+  function refreshFileList() {
+    if (!(navigator as any).getDeviceStorage) {
+      setFiles([
+        {
+          id: 'file_1',
+          name: 'example1.opml',
+          path: '/sdcard1/example1.opml',
+          lastModified: '',
+        },
+        {
+          id: 'file_2',
+          name: 'example2.opml',
+          path: '/sdcard1/example2.opml',
+          lastModified: '',
+        },
+        {
+          id: 'file_3',
+          name: 'example3.opml',
+          path: '/sdcard1/example3.opml',
+          lastModified: '',
+        },
+      ]);
+      return;
+    }
+
     listOPMLFiles().then(setFiles);
+  }
+
+  useEffect(() => {
+    refreshFileList();
   }, []);
 
   async function openFile(fileId: string) {
@@ -59,7 +67,7 @@ export default function FileBrowser({ selectedItemId }: Props): VNode {
   async function handleAction(action: string): Promise<void> {
     switch (action) {
       case 'refresh':
-        listOPMLFiles().then(setFiles);
+        refreshFileList();
         break;
       case 'create':
         fileService.create().then(() => route('/edit'));
@@ -78,6 +86,11 @@ export default function FileBrowser({ selectedItemId }: Props): VNode {
       ]}
       onAction={handleAction}
     >
+      {files === null && (
+        <Container>
+          <Typography align="center">Loading...</Typography>
+        </Container>
+      )}
       {files?.length === 0 && (
         <Container>
           <Typography align="center">
